@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Verb Pattern Matcher</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Verb Pattern Matcher</h1>
+        <form method="POST" action="/" class="row g-3">
+            <div class="col-2">
+                <input type="text" id="verb" name="verb" placeholder="Enter a verb: " class="form-control">
+            </div>
+            <div class="col-4">
+                <button type="submit" class="btn btn-primary">Get Patterns</button>
+            </div>
+        </form>
+        {% if verb_not_found_error %}
+            <p class="error my-3">{{ verb_not_found_error }}</p>
+        {% endif %}
+        {% if patterns %}
+            <div class="patterns my-3">
+                <h2>Patterns:</h2>
+                <pre>{{ patterns }}</pre>
+            </div>
+            <form method="POST" action="/validate" class="row">
+                <label for="sentence">Enter a sentence based on one
+                    of the patterns above using <b>{{ verb }}</b> as the main verb:</label>
+                <div class="col-4 my-2">
+                    <input type="text" id="sentence" name="sentence" class="form-control">
+                </div>
+                <div class="col-4 my-2">
+                    <button type="submit" class="btn btn-primary">Check Sentence</button>
+                </div>
+            </form>
+            {% if verb_ind_error %}
+                <p class="error my-3">{{ verb_ind_error }}</p>
+            {% endif %}
+            {% if sentence_result %}
+                <div class="sentence-result">
+                    <h2>Validation Result:</h2>
+                    <p>{{ sentence_result }}</p>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>
