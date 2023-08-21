@@ -45,6 +45,7 @@ flask run
 
 - Flask
 - spaCy
+- Selenium (if you're running _pattern_extractor.py_)
 
 ## File Structure
 
