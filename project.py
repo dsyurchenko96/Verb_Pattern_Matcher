@@ -58,7 +58,7 @@ def sentence_tokenizer(doc) -> list:
     """
     # The main basic dependencies that are present in the patterns
     base_deps = {"ROOT", "nsubj", "xcomp", "ccomp", "pcomp", "dobj",
-                 "pobj", "mark", "oprd", "aux", "prep", "attr", "prt"}
+                 "pobj", "mark", "oprd", "aux", "prep", "attr", "prt", "dative"}
     # If a word is not in base_deps (adjectives, adverbs, articles, etc.), it's not added
     tokens = [token for token in doc if token.dep_ in base_deps]
     return tokens
