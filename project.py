@@ -25,10 +25,11 @@ def main():
         try:
             sentence = input("Write a phrase or a sentence using one of the patterns above: ").strip()
             doc = nlp(sentence)
-            verb_ind = find_verb_index(doc, verb)
-            sentence_tokens = sentence_tokenizer(doc)[verb_ind:]
+            sentence_tokens = sentence_tokenizer(doc)
+            verb_ind = find_verb_index(sentence_tokens, verb)
+            tokens_from_root = sentence_tokens[verb_ind:]
             pattern_tokens = pattern_tokenizer(pattern_replacer(patterns), verb, nlp)
-            print(result := matcher(sentence_tokens, pattern_tokens))
+            print(result := matcher(tokens_from_root, pattern_tokens))
             if not result.endswith(":("):
                 break
         except ValueError:
@@ -53,7 +54,6 @@ def find_verb_patterns(verb: str, filename: str) -> str | None:
 def sentence_tokenizer(doc) -> list:
     """
     Creates spaCy tokens for every word in the sentence.
-    If the user's verb is not the main verb of the sentence, or not a verb at all, raises an error.
     Returns a list of tokens which are present in the base_deps set starting from the main verb.
     """
     # The main basic dependencies that are present in the patterns
@@ -68,6 +68,7 @@ def find_verb_index(doc, verb: str) -> int:
     """
     Find the verb lemma in doc (the tokenized sentence) and compare it to the input verb.
     Return the index of the verb in the sentence.
+    If the user's verb is not the main verb of the sentence, or not a verb at all, returns None.
     """
     modals = ["must", "may", "might", "can", "could", "shall", "should", "will", "would"]
     for i, token in enumerate(doc):

@@ -38,13 +38,14 @@ def validate_sentence():
 
     nlp = spacy.load("en_core_web_sm")
     doc = nlp(sentence)
-    verb_ind = find_verb_index(doc, verb)
+    sentence_tokens = sentence_tokenizer(doc)
+    verb_ind = find_verb_index(sentence_tokens, verb)
     if verb_ind is None:
         verb_ind_error = "It seems like you've written a sentence with a different verb. Try again?"
         return render_template('index.html', patterns=patterns, verb=verb, verb_ind_error=verb_ind_error)
-    sentence_tokens = sentence_tokenizer(doc)[verb_ind:]
+    tokens_from_root = sentence_tokens[verb_ind:]
     pattern_tokens = pattern_tokenizer(pattern_replacer(patterns), verb, nlp)
-    result = matcher(sentence_tokens, pattern_tokens)
+    result = matcher(tokens_from_root, pattern_tokens)
 
     return render_template('index.html', patterns=patterns, verb=verb, sentence_result=result)
 
